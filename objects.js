@@ -507,4 +507,3 @@ Sphere.draw = function() {
     
 }
 
-

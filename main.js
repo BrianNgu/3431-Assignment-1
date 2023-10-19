@@ -64,7 +64,7 @@ function setColor(c)
 }
 
 window.onload = function init() {
-
+    
     canvas = document.getElementById( "gl-canvas" );
     
     gl = WebGLUtils.setupWebGL( canvas );
@@ -187,6 +187,36 @@ function drawCone() {
     Cone.draw() ;
 }
 
+function drawSeaweed(xPos, yPos, zPos) {
+    gPush();
+    {
+      gTranslate(xPos, yPos, zPos);
+  
+      // Draws a cluster of seaweed ellipses
+      
+      for (var count = 0; count < 10; count++) {
+        gTranslate(0, 0.50, 0);
+        // Animation
+        gRotate(0.5 * Math.sin(TIME + count) * 90 / Math.PI, 0, 0, 1);
+        gPush();
+        {
+          gScale(0.1, 0.3, 0.5);
+          setColor(vec4(0.0, 0.8, 0.0, 1.0)); // Sets the color of the plant to green
+          drawSphere();
+        }
+        gPop();
+      }
+    }
+    gPop();
+  }
+
+function drawBubbles(xPos, yPos, zPos) {
+
+}
+function drawFish(xPos, yPos, zPos) {
+   
+  }
+
 // Post multiples the modelview matrix with a translation matrix
 // and replaces the modeling matrix with the result
 function gTranslate(x,y,z) {
@@ -257,43 +287,47 @@ function render() {
         TIME = TIME + curTime - prevTime ;
         prevTime = curTime ;
     }
-   
-    gTranslate(-4,0,0) ;
-    gPush() ;
+   //Creating the Ground Box
+    gPush(); // Push the current transformation matrix onto the stack
+   {
+       gTranslate(0, -6, 0); // Translate the cube downwards by 6 units along the y-axis
+       gScale(200, 2, 2); // Scale the cube by a factor of 200 on the x-axis and 2 on the y and z-axis
+       setColor(vec4(0.0, 0.0, 0.0, 1.0)); // Set the color of the cube to black
+       drawCube(); // Drawing the Ground Box
+   }
+   gPop(); // Pop the transformation matrix from the stack
+   //Creating the larger sphere
+   gPush();
     {
-		gRotate(TIME*180/3.14159,0,1,0) ;
-        setColor(vec4(1.0,0.0,0.0,1.0)) ;
-        drawSphere() ;
+        gTranslate(0, -3.5, 0); 
+        gScale(0.5, 0.5, 1); 
+        setColor(vec4(0.3, 0.3, 0.3, 1.0)); // Set the color of the sphere to gray
+        drawSphere(); // Drawing the Ground Box
     }
-    gPop() ;
-    
-    gPush() ;
-    {
-        gTranslate(3,0,0) ;
-        setColor(vec4(0.0,1.0,0.0,1.0)) ;
-        gRotate(TIME*180/3.14159,0,1,0) ;
-        drawCube() ;
-    }
-    gPop() ;
-    
-    gPush() ;
-    {
-        gTranslate(5,0,0) ;
-        setColor(vec4(0.0,0.0,1.0,1.0)) ;
-        gRotate(TIME*180/3.14159,0,1,0) ;
-        drawCylinder() ;
-    }
-    gPop() ;
-    
-    gPush() ;
-    {
-        gTranslate(7,0,0) ;
-        setColor(vec4(1.0,1.0,0.0,1.0)) ;
-        gRotate(TIME*180/3.14159,0,1,0) ;
-        drawCone() ;
-    }
-    gPop() ;
-    
+    gPop();
+    //Creating the smaller sphere
+   gPush();
+   {
+       gTranslate(-0.8, -3.7, 0); 
+       gScale(0.3, 0.3, 1); 
+       setColor(vec4(0.3, 0.3, 0.3, 1.0)); // Set the color of the sphere to gray
+       drawSphere(); // Drawing the Ground Box
+       
+   }
+   gPop();
+
+   //Seaweed
+   var seaweed1 = [0.4,-3.7,0];
+   var seaweed2 = [0,-4,0];
+   var seaweed3 = [-0.4,-3.7,0];
+
+   drawSeaweed(seaweed1[0],seaweed1[1],seaweed1[2]);
+   drawSeaweed(seaweed2[0],seaweed2[1],seaweed2[2]);
+   drawSeaweed(seaweed3[0],seaweed3[1],seaweed3[2]);
+
+   //Fish
+
+
     if( animFlag )
         window.requestAnimFrame(render);
 }
