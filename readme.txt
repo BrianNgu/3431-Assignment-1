@@ -5,3 +5,7 @@ I created a human character with no arms, which moves in the x and y directions,
 Where I struggled was creating the bubbles. I made a function that draws the bubbles which works only in the beginning of the code.
 When first ran, 4 bubbles are generated which go upwards but it does not repeat every 4 seconds. The bubbles do osicilate, and I made the bubbles
 appear as close to the mouth as I could. 
+
+I implemented osicilation for the bubbles by adding this line to my drawBubbles function: // gRotate(2* (TIME % 360) * 100, 5, 5, 5);
+This line makes it so the bubles that it creates rotates around the x, y, and z axis. 
+The first argument 2* (TIME % 360) * 100 determines the angle of rotation
