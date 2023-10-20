@@ -267,8 +267,8 @@ function render() {
     //Creating the Ground Box
     gPush(); // Push the current transformation matrix onto the stack
     {
-        gTranslate(0, -6, 0); // Translate the cube downwards by 6 units along the y-axis
-        gScale(200, 2, 2); // Scale the cube by a factor of 200 on the x-axis and 2 on the y and z-axis
+        gTranslate(0, -6, 0); 
+        gScale(200, 2, 2); 
         setColor(vec4(0.0, 0.0, 0.0, 1.0)); // Set the color of the cube to black
         drawCube(); // Drawing the Ground Box
     }
@@ -367,9 +367,9 @@ function render() {
     gPush();
     {
         //Animation making it rotate around the seaweed
-        gRotate(TIME * 120 / Math.PI, 0, -1, 0); //Makes it rotate around the point
+        gRotate(TIME * 100 / Math.PI, 0, -1, 0); //Makes it rotate around the point
         gScale(-1, 1, 1);
-        gTranslate(0, -7.5 + 0.05 * Math.cos(TIME / 0.9) * 45 / Math.PI, 0); //Makes it travel back and forth
+        gTranslate(0, -7 + 0.05 * Math.cos(TIME / 0.8) * 45 / Math.PI, 0); //Makes it travel back and forth
 
         gPush();
         {
@@ -426,7 +426,7 @@ function render() {
             //Fish Right Eye
             gPush();
             {
-                gTranslate(0.35, 0.3, -1.5);
+                gTranslate(0.38, 0.25, -1.45);
                 gScale(0.15, 0.15, 0.15);
                 setColor(vec4(1.0, 1.0, 1.0, 1.0));
                 drawSphere();
@@ -436,7 +436,7 @@ function render() {
             //Fish Right Eye Pupil
             gPush();
             {
-                gTranslate(0.35, 0.3, -1.65);
+                gTranslate(0.38, 0.25, -1.65);
                 gScale(0.05, 0.05, 0.05);
                 setColor(vec4(0, 0, 0, 0));
                 drawSphere();
@@ -446,7 +446,7 @@ function render() {
             //Fish Left Eye
             gPush();
             {
-                gTranslate(-0.35, 0.3, -1.5);
+                gTranslate(-0.38, 0.25, -1.45);
                 gScale(0.15, 0.15, 0.15);
                 setColor(vec4(1.0, 1.0, 1.0, 1.0));
                 drawSphere();
@@ -455,7 +455,7 @@ function render() {
             //Fish Left Eye Pupil
             gPush();
             {
-                gTranslate(-0.35, 0.3, -1.65);
+                gTranslate(-0.38, 0.25, -1.65);
                 gScale(0.05, 0.05, 0.05);
                 setColor(vec4(0, 0, 0, 0));
                 drawSphere();
@@ -467,37 +467,35 @@ function render() {
     }
     gPop();
 
-
     //Diver
-    var diver = 3 + Math.cos(TIME);
-    
+    var diver = 3 + Math.cos(TIME/2);
+
     gPush();
-    {   
+    {
         gTranslate(diver, diver, 0);
-        gRotate(20, 0, -1, 0);
+        gRotate(30, 0, -1, 0);
 
         //Diver's Head
         gPush(); {
 
             gScale(0.4, 0.4, 0.4);
-            setColor(vec4(0.5, 0.0, 0.5, 1.0));
+            setColor(vec4(0.8, 0.0, 0.8, 1.0));
             drawSphere();
-            
-            if ((TIME - lastLaunch) % 4 || lastLaunch === 0) {
-                drawBubble(0, 0.5, 0, 0);
+
+            if ((Math.round(TIME) - lastLaunch) % 4) {
+                drawBubble(0, 0.5, 0, 0); //Supposed to launch a bubble every 4 seconds, instead launches a bubble only the first second and does not repeat
                 lastLaunch = TIME;
 
             }
-
 
         }
         gPop();
 
         //Torso
         gPush(); {
-            gTranslate(0, -1.6, 0);
+            gTranslate(0, -1.55, 0);
             gScale(0.8, 1.2, 0.5);
-            setColor(vec4(0.5, 0.0, 0.5, 1.0));
+            setColor(vec4(0.8, 0.0, 0.8, 1.0));
             drawCube()
         }
         gPop();
@@ -505,29 +503,29 @@ function render() {
         gPush();
         {
             //Legs
-            gTranslate(0, -3.2, 0);
-            setColor(vec4(0.5, 0.0, 0.5, 1.0));
+            gTranslate(0, -3, 0);
+            setColor(vec4(0.8, 0.0, 0.8, 1.0));
 
             //Leg 1
             gPush(); {
                 gTranslate(-0.6, 0, -0.2);
-                gRotate(-(Math.cos(TIME) * 25) + 32.5, 1, 0, 0);
+                gRotate(-(Math.cos(TIME) * 25) + 30, 1, 0, 0); //Rotates the whole leg joint
 
                 // Thigh
                 gPush();
                 {
-                    gScale(0.2, 0.7, 0.2);
+                    gScale(0.15, 0.7, 0.15);
                     drawCube();
                 }
                 gPop();
 
-                // Shin
+                //  Shin
                 gTranslate(0, -1.4, -0.3);
                 gRotate(25, 1, 0, 0);
 
                 gPush();
                 {
-                    gScale(0.2, 0.7, 0.2);
+                    gScale(0.15, 0.7, 0.15);
                     drawCube();
                 }
                 gPop();
@@ -536,23 +534,22 @@ function render() {
 
                 gPush();
                 {
-                    gScale(0.2, 0.1, 0.6);
+                    gScale(0.15, 0.1, 0.6);
                     drawCube();
                 }
                 gPop();
             }
             gPop();
 
-            //Leg 2
+            //Leg 2 
             gPush();
             {
-                gTranslate(0.6, 0, -0.2);
-                gRotate((Math.cos(TIME) * 25) + 32.5, 1, 0, 0);
-
+                gTranslate(0.6, 0, -0.15);
+                gRotate((Math.cos(TIME) * 25) + 30, 1, 0, 0);
                 // Thigh
                 gPush();
                 {
-                    gScale(0.2, 0.7, 0.2);
+                    gScale(0.15, 0.5, 0.15);
                     drawCube();
                 }
                 gPop();
@@ -563,7 +560,7 @@ function render() {
 
                 gPush();
                 {
-                    gScale(0.2, 0.7, 0.2);
+                    gScale(0.15, 0.7, 0.15);
                     drawCube();
                 }
                 gPop();
@@ -573,7 +570,7 @@ function render() {
 
                 gPush();
                 {
-                    gScale(0.2, 0.1, 0.6);
+                    gScale(0.15, 0.1, 0.6);
                     drawCube();
                 }
                 gPop();
@@ -582,27 +579,34 @@ function render() {
         }
         gPop();
 
-
     }
     gPop();
 
 
+    /**
+     * Draws a bubble at the specified coordinates, with an animation that starts at the given start time.
+     *
+     * @param {number} x - The x-coordinate of the bubble.
+     * @param {number} y - The y-coordinate of the bubble.
+     * @param {number} z - The z-coordinate of the bubble.
+     * @param {number} startTime - The start time of the animation.
+     */
     function drawBubble(x, y, z, startTime) {
         var numBubbles = 4; // Number of bubbles to launch
         var speed = 1.5; // Adjust the speed as needed
-    
+
         for (var i = 0; i < numBubbles; i++) {
             var elapsedTime = TIME - startTime - i * 0.5; // Adjust the delay between bubbles
-    
+
             if (elapsedTime > 0) {
                 gPush();
                 {
                     // Calculate the new y position based on elapsed time and speed
                     var newYPos = y + elapsedTime * speed;
-    
+
                     gTranslate(x, newYPos, z);
-                    gRotate((TIME % 360) * 100, 5, 5, 5); // This makes the bubbles oscillate
-                    gScale(0.2, 0.22, 0.2);
+                    gRotate(2* (TIME % 360) * 100, 5, 5, 5); // This makes the bubbles oscillate
+                    gScale(0.3, 0.35, 0.3);
                     setColor(vec4(1, 1, 1, 1));
                     drawSphere();
                 }
