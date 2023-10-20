@@ -45,6 +45,10 @@ var resetTimerFlag = true;
 var animFlag = false;
 var controller;
 
+var lastLaunch = 0;
+
+
+
 function setColor(c) {
     ambientProduct = mult(lightAmbient, c);
     diffuseProduct = mult(lightDiffuse, c);
@@ -189,9 +193,7 @@ function drawCone() {
 
 
 
-function drawBubbles(xPos, yPos, zPos) {
 
-}
 
 // Post multiples the modelview matrix with a translation matrix
 // and replaces the modeling matrix with the result
@@ -361,23 +363,14 @@ function render() {
     }
     gPop();
 
-
-    //Person
-    
-    //Bubbles
-    var bubbleArray = [];
-    
-    
-
-
     //Fish
     gPush();
     {
         //Animation making it rotate around the seaweed
-        gRotate(TIME * 120 / Math.PI, 0, -1, 0);
+        gRotate(TIME * 120 / Math.PI, 0, -1, 0); //Makes it rotate around the point
         gScale(-1, 1, 1);
-        gTranslate(0, -7.5 + 0.05 * Math.cos(TIME / 0.9) * 45 / Math.PI, 0);
-        
+        gTranslate(0, -7.5 + 0.05 * Math.cos(TIME / 0.9) * 45 / Math.PI, 0); //Makes it travel back and forth
+
         gPush();
         {
             gTranslate(3, 5, 0);
@@ -469,15 +462,154 @@ function render() {
             }
             gPop();
 
-        } 
+        }
         gPop();
     }
     gPop();
 
-    
-    
 
+    //Diver
+    var diver = 3 + Math.cos(TIME);
     
+    gPush();
+    {   
+        gTranslate(diver, diver, 0);
+        gRotate(20, 0, -1, 0);
+
+        //Diver's Head
+        gPush(); {
+
+            gScale(0.4, 0.4, 0.4);
+            setColor(vec4(0.5, 0.0, 0.5, 1.0));
+            drawSphere();
+            
+            if ((TIME - lastLaunch) % 4 || lastLaunch === 0) {
+                drawBubble(0, 0.5, 0, 0);
+                lastLaunch = TIME;
+
+            }
+
+
+        }
+        gPop();
+
+        //Torso
+        gPush(); {
+            gTranslate(0, -1.6, 0);
+            gScale(0.8, 1.2, 0.5);
+            setColor(vec4(0.5, 0.0, 0.5, 1.0));
+            drawCube()
+        }
+        gPop();
+
+        gPush();
+        {
+            //Legs
+            gTranslate(0, -3.2, 0);
+            setColor(vec4(0.5, 0.0, 0.5, 1.0));
+
+            //Leg 1
+            gPush(); {
+                gTranslate(-0.6, 0, -0.2);
+                gRotate(-(Math.cos(TIME) * 25) + 32.5, 1, 0, 0);
+
+                // Thigh
+                gPush();
+                {
+                    gScale(0.2, 0.7, 0.2);
+                    drawCube();
+                }
+                gPop();
+
+                // Shin
+                gTranslate(0, -1.4, -0.3);
+                gRotate(25, 1, 0, 0);
+
+                gPush();
+                {
+                    gScale(0.2, 0.7, 0.2);
+                    drawCube();
+                }
+                gPop();
+                // Foot does not rotate
+                gTranslate(0, -0.6, 0.5);
+
+                gPush();
+                {
+                    gScale(0.2, 0.1, 0.6);
+                    drawCube();
+                }
+                gPop();
+            }
+            gPop();
+
+            //Leg 2
+            gPush();
+            {
+                gTranslate(0.6, 0, -0.2);
+                gRotate((Math.cos(TIME) * 25) + 32.5, 1, 0, 0);
+
+                // Thigh
+                gPush();
+                {
+                    gScale(0.2, 0.7, 0.2);
+                    drawCube();
+                }
+                gPop();
+
+                // Shin
+                gTranslate(0, -1.4, -0.3);
+                gRotate(25, 1, 0, 0);
+
+                gPush();
+                {
+                    gScale(0.2, 0.7, 0.2);
+                    drawCube();
+                }
+                gPop();
+
+                // Foot
+                gTranslate(0, -0.6, 0.5);
+
+                gPush();
+                {
+                    gScale(0.2, 0.1, 0.6);
+                    drawCube();
+                }
+                gPop();
+            }
+            gPop();
+        }
+        gPop();
+
+
+    }
+    gPop();
+
+
+    function drawBubble(x, y, z, startTime) {
+        var numBubbles = 4; // Number of bubbles to launch
+        var speed = 1.5; // Adjust the speed as needed
+    
+        for (var i = 0; i < numBubbles; i++) {
+            var elapsedTime = TIME - startTime - i * 0.5; // Adjust the delay between bubbles
+    
+            if (elapsedTime > 0) {
+                gPush();
+                {
+                    // Calculate the new y position based on elapsed time and speed
+                    var newYPos = y + elapsedTime * speed;
+    
+                    gTranslate(x, newYPos, z);
+                    gRotate((TIME % 360) * 100, 5, 5, 5); // This makes the bubbles oscillate
+                    gScale(0.2, 0.22, 0.2);
+                    setColor(vec4(1, 1, 1, 1));
+                    drawSphere();
+                }
+                gPop();
+            }
+        }
+    }
 
 
     if (animFlag)
